@@ -51,7 +51,7 @@ public class BookOrdersController {
         ResponseDTO responseDTO = new ResponseDTO("Updated Order Details with Order ID: "+orderId, response);
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }
-    //Update Order Details(Book and Quantity) By OrderID
+    //Delete Order Id by User Id and Order Id
     @DeleteMapping("/delete/{userId}/{orderId}")
     public ResponseEntity<ResponseDTO> updateDeleteById(@PathVariable Long userId,@PathVariable Long orderId){
         String response = bookOrderService.deleteOrderByOrderId(userId, orderId);

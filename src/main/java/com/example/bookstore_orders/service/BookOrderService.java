@@ -109,17 +109,20 @@ public class BookOrderService implements IBookOrderService{
         }else
             throw new OrderException("User ID | order ID | Book ID is invalid");
     }
-
+    //Delete Order Id by User Id and Order Id
     @Override
     public String deleteOrderByOrderId(Long userId, Long orderId) {
-//        Optional<UserDetails> userData = userRepo.findById(userId);
-//        Optional<Orders> orderDetails = orderRepo.findById(orderId);
-//        if(orderDetails.isPresent() && userData.get().equals(orderDetails.get().getUser())){
-//            orderRepo.deleteByOrderId(orderId);
-            //sending email
-//            emailSender.sendEmail(orderDetails.get().getUser().getEmailAddress(), "Order Deleted!!!", "Your Order has been deleted successfully from the Book Store Application!!");
-            return "Data Deleted successfully and e-mail sent to the user!";
-//        }else
-//            throw new OrderException("Invalid Order ID | User ID");
+        ResponseEntity<UserDataDTO> userDetails = restTemplate.getForEntity(USER_URI + userId, UserDataDTO.class);
+        ResponseEntity<BookOrders> orderDetails = restTemplate.getForEntity(ORDER_URI + orderId, BookOrders.class);
+        if (userDetails.hasBody() && orderDetails.hasBody()) {
+            if (orderDetails.getBody().getUserId().equals(userDetails.getBody().getUserId())) {
+                bookOrdersRepo.deleteById(orderId);
+                //sending email
+                emailSender.sendEmail(userDetails.getBody().getEmailAddress(), "Order Deleted!!!", "Your Order ID: " + orderId + ", has been deleted successfully from the Book Store Application!!");
+                return "Data Deleted successfully and e-mail sent to the user!";
+            } else
+                throw new OrderException("Cannot find order ID: " + orderId + ", for the User ID: " + userId);
+        } else
+            throw new OrderException("Invalid Order ID | User Id");
     }
 }
