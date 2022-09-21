@@ -2183,3 +2183,4 @@ Hello! Welcome to Book Store Project!
 2022-09-21 22:11:40.633  INFO 28688 --- [http-nio-9093-exec-2] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
 2022-09-21 22:11:40.634  INFO 28688 --- [http-nio-9093-exec-2] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
 2022-09-21 22:12:16.500  INFO 28688 --- [AsyncResolver-bootstrap-executor-0] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2022-09-21 22:17:16.501  INFO 28688 --- [AsyncResolver-bootstrap-executor-0] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
