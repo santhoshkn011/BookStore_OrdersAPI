@@ -5,8 +5,9 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class OrderDTO {
+public class CartDataDTO {
+    Long cartId;
     Long userId;
     Long bookId;
-    int orderQuantity;
+    int quantity;
 }

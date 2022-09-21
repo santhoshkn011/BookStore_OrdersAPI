@@ -13,4 +13,8 @@ public interface IBookOrderService {
     String editOrderByOrderId(Long orderId, OrderDTO orderDTO);
 
     String deleteOrderByOrderId(Long userId, Long orderId);
+
+    BookOrders getOrderDetailsByOrderId(Long orderId);
+
+    BookOrders findOrderDetailsByOrderId(Long orderId);
 }

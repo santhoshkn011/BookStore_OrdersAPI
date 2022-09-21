@@ -1,8 +1,10 @@
 package com.example.bookstore_orders.dto;
 
-import java.util.List;
-import java.util.Optional;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+@Data
+@NoArgsConstructor
 public class ResponseDTO {
     String message;
     Object response;

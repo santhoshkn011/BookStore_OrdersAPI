@@ -22,12 +22,12 @@ public class BookOrders {
     private Long userId;
     private Long bookId;
     int orderQuantity;
-    int orderPrice;
-    String address;
-    LocalDate orderDate;
-    boolean cancel;
+    private double orderPrice;
+    private String address;
+    private LocalDate orderDate;
+    private boolean cancel;
 
-    public BookOrders(Long userId, Long bookId, int orderQuantity, int orderPrice, String address, LocalDate orderDate, boolean cancel) {
+    public BookOrders(Long userId, Long bookId, int orderQuantity, double orderPrice, String address, LocalDate orderDate, boolean cancel) {
         this.userId = userId;
         this.bookId = bookId;
         this.orderQuantity = orderQuantity;

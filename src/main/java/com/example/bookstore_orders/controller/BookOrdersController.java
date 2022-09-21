@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.awt.print.Book;
 import java.util.List;
 
 @RestController
@@ -20,7 +21,7 @@ public class BookOrdersController {
     @PostMapping("/insert")
     public ResponseEntity<ResponseDTO> addOrderDetails(@RequestBody OrderDTO orderDTO){
         String response = bookOrderService.addOrderDetails(orderDTO);
-        ResponseDTO responseDTO = new ResponseDTO("Order Details Added", response);
+        ResponseDTO responseDTO = new ResponseDTO("Order Details Added and e-mail sent", response);
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }
     //Get Order Data by Token
@@ -29,6 +30,19 @@ public class BookOrdersController {
         List<BookOrders> ordersList = bookOrderService.getOrderDetailsByToken(token);
         ResponseDTO responseDTO = new ResponseDTO("Order Details with Token: "+token, ordersList);
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+    //Get Order Details by Order ID
+    @GetMapping("/orderDetails/{orderId}")
+    public ResponseEntity<ResponseDTO> getOrderDataByOrderId(@PathVariable Long orderId){
+        BookOrders orderDetails = bookOrderService.getOrderDetailsByOrderId(orderId);
+        ResponseDTO responseDTO = new ResponseDTO("Order Details with Order ID: "+orderId, orderDetails);
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+    //Get Order Details by Order ID (MicroService)
+    @GetMapping("/orderData/{orderId}")
+    public BookOrders findOrderDataByOrderId(@PathVariable Long orderId){
+        BookOrders orderDetails = bookOrderService.findOrderDetailsByOrderId(orderId);
+        return orderDetails;
     }
     //Update Order Details(Book and Quantity) By OrderID
     @PutMapping("/update/{orderId}")

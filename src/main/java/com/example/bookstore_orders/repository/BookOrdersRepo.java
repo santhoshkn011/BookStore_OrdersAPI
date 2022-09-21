@@ -9,6 +9,6 @@ import java.util.List;
 
 @Repository
 public interface BookOrdersRepo extends JpaRepository<BookOrders, Long> {
-    @Query(value = "SELECT * FROM BookOrders WHERE user_id=:userId", nativeQuery = true)
+    @Query(value = "SELECT * FROM book_orders WHERE user_id=:userId", nativeQuery = true)
     List<BookOrders> getOrderListWithUserId(Long userId);
 }
