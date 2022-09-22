@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.sql.SQLOutput;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -35,21 +36,22 @@ public class BookOrderService implements IBookOrderService{
     private RestTemplate restTemplate;
     @Override
     public String addOrderDetails(OrderDTO orderDTO) {
-        ResponseEntity<UserDataDTO> userDetails = restTemplate.getForEntity(USER_URI + orderDTO.getUserId(), UserDataDTO.class);
+        UserDataDTO userData = restTemplate.getForObject(USER_URI + orderDTO.getUserId(), UserDataDTO.class);
+//        ResponseEntity<UserDataDTO> userDetails = restTemplate.getForEntity(USER_URI + orderDTO.getUserId(), UserDataDTO.class);
         ResponseEntity<BookDataDTO> bookDetails = restTemplate.getForEntity(BOOK_URI + orderDTO.getBookId(), BookDataDTO.class);
-        if (userDetails.hasBody() && bookDetails.hasBody()) {
+        if (userData!=null && bookDetails.hasBody()) {
             if (orderDTO.getOrderQuantity() <= bookDetails.getBody().getQuantity()) {
                 //Calculations
                 double orderPrice = bookDetails.getBody().getPrice() * orderDTO.getOrderQuantity();
-                String address = userDetails.getBody().getAddress();
+                String address = userData.getAddress();
                 LocalDate orderDate = LocalDate.now();
                 boolean cancel = false;
                 BookOrders orderDetails = new BookOrders(orderDTO.getUserId(), orderDTO.getBookId(), orderDTO.getOrderQuantity(), orderPrice, address, orderDate, cancel);
                 bookOrdersRepo.save(orderDetails);
                 //Token generated
-                String token = tokenUtility.createToken(userDetails.getBody().getUserId());
+                String token = tokenUtility.createToken(userData.getUserId());
                 //sending email
-                emailSender.sendEmail(userDetails.getBody().getEmailAddress(), "Order Placed!!!", "Please Click on the below link for the order details." + "\n" + "http://localhost:9093/orders/orderDataByToken/" + token);
+                emailSender.sendEmail(userData.getEmailAddress(), "Order Placed!!!", "Please Click on the below link for the order details." + "\n" + "http://localhost:9093/orders/orderDataByToken/" + token);
                 return token;
             } else
                 throw new OrderException("Quantity Exceeds, Available Book Quantity: " + bookDetails.getBody().getQuantity());
